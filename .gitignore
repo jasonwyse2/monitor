@@ -1,0 +1,3 @@
+:memory
+nohup.out
+uwsgi.sh

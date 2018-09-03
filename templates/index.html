@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BitAsset Monitor - Dashboard</title>
+
+    <!-- Bootstrap core CSS-->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template-->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Page level plugin CSS-->
+    <link href="/static/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+
+      <a class="navbar-brand mr-1" href="">BitAsset Monitor</a>
+
+      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Navbar Search -->
+      <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <div class="input-group">
+          <!--<input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">-->
+          <div class="input-group-append">
+            <!--<button class="btn btn-primary" type="button">-->
+              <!--&lt;!&ndash;<i class="fas fa-search"></i>&ndash;&gt;-->
+            <!--</button>-->
+          </div>
+        </div>
+      </form>
+
+      <!-- Navbar -->
+      <ul class="navbar-nav ml-auto ml-md-0">
+        <li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-bell fa-fw"></i>
+            <span class="badge badge-danger">9+</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-envelope fa-fw"></i>
+            <span class="badge badge-danger">7</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user-circle fa-fw"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="#">Activity Log</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+          </div>
+        </li>
+      </ul>
+
+    </nav>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <ul class="sidebar navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Pages</span>
+          </a>
+          <!--<div class="dropdown-menu" aria-labelledby="pagesDropdown">-->
+            <!--<h6 class="dropdown-header">Login Screens:</h6>-->
+            <!--<a class="dropdown-item" href="login.html">Login</a>-->
+            <!--<a class="dropdown-item" href="register.html">Register</a>-->
+            <!--<a class="dropdown-item" href="forgot-password.html">Forgot Password</a>-->
+            <!--<div class="dropdown-divider"></div>-->
+            <!--<h6 class="dropdown-header">Other Pages:</h6>-->
+            <!--<a class="dropdown-item" href="404.html">404 Page</a>-->
+            <!--<a class="dropdown-item" href="blank.html">Blank Page</a>-->
+          <!--</div>-->
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Charts</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tables</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/order/" target="_Blank">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Order</span></a>
+        </li>
+      </ul>
+
+      <div id="content-wrapper">
+
+        <div class="container-fluid">
+
+          <!-- Breadcrumbs-->
+          <!--<ol class="breadcrumb">-->
+            <!--<li class="breadcrumb-item">-->
+              <!--<a href="#">Dashboard</a>-->
+            <!--</li>-->
+            <!--<li class="breadcrumb-item active">Overview</li>-->
+          <!--</ol>-->
+          <!-- Area Chart Example-->
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fas fa-chart-area"></i>
+              账户状态</div>
+            <div class="card-body">
+            <div class="row clearfix">
+              <div class="col-md-5 column">
+                  <div class="card1-header" id="realtime_price">
+                    <i class="fas "></i>
+                    实时价格({{datetime_website|safe}})
+                  </div>
+                  <table class="table table-bordered dataTable" id="price">
+                      <thead>
+                          <tr>
+                              <th>ETH/BTC</th> <th>BCH/BTC </th><th>LTC/BTC</th>
+                            <th>BTC/USDT</th><th>ETH/USDT</th> <th>BCH/USDT </th><th>LTC/USDT</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+
+                      </tbody>
+                  </table>
+
+              </div>
+
+            </div>
+            <div class="row clearfix">
+              <div class="col-md-5 column">
+                  <div class="card1-header">
+                    <i class="fas fa-user"></i>
+                    BTC/ETH账户余额
+                  </div>
+                  <table class="table table-bordered dataTable" id="balance1">
+                      <thead>
+                          <tr>
+                              <th>Currency</th> <th>Frozen </th><th>Available</th> <th>Balance</th><th>PNL</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+
+                      </tbody>
+                  </table>
+
+              </div>
+              <div class="col-md-5 column">
+                  <div class="card1-header">
+                    <i class="fas fa-user"></i>
+                    BTC/BCH账户余额
+                  </div>
+                  <table class="table table-bordered dataTable" id="balance2">
+                      <thead>
+                          <tr>
+                              <th>Currency</th> <th>Frozen </th><th>Available</th> <th>Balance</th><th>PNL</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+
+                      </tbody>
+                  </table>
+
+              </div>
+            </div>
+            <div class="row clearfix">
+
+              <div class="col-md-4 column">
+                  <div class="card1-header">
+                    <i class="fas fa-user"></i>
+                    BTC/LTC账户余额
+                  </div>
+                  <table class="table table-bordered dataTable" id="balance3">
+                      <thead>
+                          <tr>
+                              <th>Currency</th> <th>Frozen </th><th>Available</th> <th>Balance</th><th>PNL</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+            </div>
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright © Lingjun Invest</span>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+      <!-- /.content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="login.html">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <!--<script src="/static/vendor/chart.js/Chart.min.js"></script>-->
+    <!--<script src="/static/vendor/datatables/jquery.dataTables.js"></script>-->
+    <!--<script src="/static/vendor/datatables/dataTables.bootstrap4.js"></script>-->
+
+    <!-- Custom scripts for all pages-->
+    <!--<script src="/static/js/sb-admin.min.js"></script>-->
+    <script src="/static/js/bitasstet.js"></script>
+
+    <!-- Demo scripts for this page-->
+    <script src="/static/js/demo/datatables-demo.js"></script>
+    <script src="/static/js/demo/chart-area-demo.js"></script>
+    <script type="text/javascript">
+
+        var data = {{ data|safe}}
+        // price_array = {{price_list|safe}}
+        data_array = data
+        now_balance_array = data_array[0]
+        yest_balance_array = data_array[1]
+        price_array = data_array[2]
+        datetime = data_array[3]
+        $('div#realtime_price').text('实时价格  '+datetime)
+        // alert(price_array.length)
+        id_list = new Array('table#balance1','table#balance2','table#balance3')
+        float_fixed = 6
+        var keys=new Array("currency","frozen","available","balance")
+        $table_order = $('table#price')
+        // alert(price_array[0])
+        $tr = $('<tr></tr>').appendTo($table_order)
+        for(var i=0,len=price_array.length;i<len;i++){
+            $('<td></td>').text(price_array[i]).appendTo($tr)
+        }
+
+        for (var i=0,len=now_balance_array.length; i<len; i++){
+            currency_now = now_balance_array[i]
+            currency_yest = yest_balance_array[i]
+            // alert(data_arr.length)
+            for (var j=0,len1=currency_now.length;j<len1;j++ ){
+            // var item = data_arr[j]
+              var now_items = currency_now[j]
+              var yest_item = currency_yest[j]
+              $tr = $('<tr></tr>').appendTo($(id_list[i]))
+              var k=0,len2=Object.keys(now_items).length
+              for(;k<len2;k++){
+                  var $val = now_items[keys[k]]
+                  if(k>0) {$val = parseFloat($val).toFixed(float_fixed)}
+                  $td = $('<td></td>').text($val)
+                  $tr.append($td)
+              }
+              pnl = now_items['balance']/yest_item['balance']-1
+              $td = $('<td></td>').text(pnl)
+              $tr.append($td)
+            }
+            $tr = $('<tr></tr>').appendTo($(id_list[i]))
+            $('<td></td>').text('Total').appendTo($tr)
+
+            // alert(currency_now[0])
+            for(var k=1;k<4;k++){
+                  $btc = currency_now[0][keys[k]]
+                  $non_btc = currency_now[1][keys[k]]
+                  $all_in_btc = parseFloat($btc)+parseFloat(price_array[i])*parseFloat($non_btc)
+                  $('<td></td>').text($all_in_btc.toFixed(float_fixed)).appendTo($tr)
+            }
+            $('<td></td>').text(' ').appendTo($tr)
+        }
+      function update_balance(){
+        $.get("/balance/", function(data){
+
+            var data = '{{ data|safe}}'
+            // alert(data)
+            data_array = eval(data)
+            now_balance_array = data_array[0]
+            yest_balance_array = data_array[1]
+            price_array = data_array[2]
+            // alert(data_array.length)
+            id_list = new Array('table#balance1','table#balance2','table#balance3')
+            float_fixed = 6
+            var keys=new Array("currency","frozen","available","balance")
+
+            $tr = $('table#price').children('tr').eq(0)
+
+            for(var i=0,len=price_array.length;i<len;i++){
+                $tr.children('td').eq(i).text(price_array[i])
+            }
+
+            for (var i=0,len=now_balance_array.length; i<len; i++){
+                currency_now = now_balance_array[i]
+                currency_yest = yest_balance_array[i]
+                $table = $(id_list[i])
+                // alert(data_arr.length)
+                for (var j=0,len1=currency_now.length;j<len1;j++ ){
+                    var now_items = currency_now[j]
+                    var yest_item = currency_yest[j]
+                    var k=0,len2=Object.keys(now_items).length
+                    for(;k<len2;k++){
+                        var $val = now_items[keys[k]]
+                        if(k>0) {$val = parseFloat($val).toFixed(float_fixed)}
+                        $td = $table.find('tr').eq(j).children('td').eq(k)
+                        $td.text($val)
+                    }
+                    pnl = now_items['balance']/yest_item['balance']-1
+                    $td_pnl = $table.find('tr').eq(j).children('td').eq(k)
+                    $td_pnl.text(pnl)
+              }
+            }
+        })
+          // alert('hello')
+      }
+        $(document).ready(function () {
+        // setInterval("update_balance()", 30000);//0.5s一次
+    });
+
+
+
+    </script>
+
+  </body>
+
+</html>
