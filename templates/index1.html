@@ -103,7 +103,16 @@
             <i class="fas fa-fw fa-folder"></i>
             <span>Pages</span>
           </a>
-
+          <!--<div class="dropdown-menu" aria-labelledby="pagesDropdown">-->
+            <!--<h6 class="dropdown-header">Login Screens:</h6>-->
+            <!--<a class="dropdown-item" href="login.html">Login</a>-->
+            <!--<a class="dropdown-item" href="register.html">Register</a>-->
+            <!--<a class="dropdown-item" href="forgot-password.html">Forgot Password</a>-->
+            <!--<div class="dropdown-divider"></div>-->
+            <!--<h6 class="dropdown-header">Other Pages:</h6>-->
+            <!--<a class="dropdown-item" href="404.html">404 Page</a>-->
+            <!--<a class="dropdown-item" href="blank.html">Blank Page</a>-->
+          <!--</div>-->
         </li>
         <li class="nav-item">
           <a class="nav-link" href="">
@@ -143,18 +152,18 @@
               <div class="col-md-5 column">
                   <div class="card1-header" id="realtime_price">
                     <i class="fas "></i>
-                    实时价格()
+                    实时价格({{datetime_website|safe}})
                   </div>
                   <table class="table table-bordered dataTable" id="price">
-                      <!--<thead>-->
-                          <!--<tr>-->
-                              <!--<th>ETH/BTC</th> <th>BCH/BTC </th><th>LTC/BTC</th>-->
-                            <!--<th>BTC/USDT</th><th>ETH/USDT</th> <th>BCH/USDT </th><th>LTC/USDT</th>-->
-                          <!--</tr>-->
-                      <!--</thead>-->
-                      <!--<tbody>-->
+                      <thead>
+                          <tr>
+                              <th>ETH/BTC</th> <th>BCH/BTC </th><th>LTC/BTC</th>
+                            <th>BTC/USDT</th><th>ETH/USDT</th> <th>BCH/USDT </th><th>LTC/USDT</th>
+                          </tr>
+                      </thead>
+                      <tbody>
 
-                      <!--</tbody>-->
+                      </tbody>
                   </table>
 
               </div>
@@ -164,46 +173,60 @@
               <div class="col-md-5 column">
                   <div class="card1-header">
                     <i class="fas fa-user"></i>
-                    ETH/BTC 账户余额
+                    BTC/ETH账户余额
                   </div>
-                  <table class="table table-bordered dataTable" id="ETH_BTC">
-                      <!--<thead>-->
-                          <!--<tr>-->
-                              <!--<th>Currency</th> <th>Frozen </th><th>Available</th> <th>Balance</th><th>PNL</th>-->
-                          <!--</tr>-->
-                      <!--</thead>-->
-                      <!--<tbody>-->
+                  <table class="table table-bordered dataTable" id="balance1">
+                      <thead>
+                          <tr>
+                              <th>Currency</th> <th>Frozen </th><th>Available</th> <th>Balance</th><th>PNL</th>
+                          </tr>
+                      </thead>
+                      <tbody>
 
-                      <!--</tbody>-->
+                      </tbody>
                   </table>
 
               </div>
               <div class="col-md-5 column">
                   <div class="card1-header">
                     <i class="fas fa-user"></i>
-                    BCH/BTC 账户余额
+                    BTC/BCH账户余额
                   </div>
-                  <table class="table table-bordered dataTable" id="BCH_BTC">
+                  <table class="table table-bordered dataTable" id="balance2">
+                      <thead>
+                          <tr>
+                              <th>Currency</th> <th>Frozen </th><th>Available</th> <th>Balance</th><th>PNL</th>
+                          </tr>
+                      </thead>
+                      <tbody>
 
+                      </tbody>
                   </table>
 
               </div>
             </div>
             <div class="row clearfix">
 
-              <div class="col-md-5 column">
+              <div class="col-md-4 column">
                   <div class="card1-header">
                     <i class="fas fa-user"></i>
-                    LTC/BTC 账户余额
+                    BTC/LTC账户余额
                   </div>
-                  <table class="table table-bordered dataTable" id="LTC_BTC">
+                  <table class="table table-bordered dataTable" id="balance3">
+                      <thead>
+                          <tr>
+                              <th>Currency</th> <th>Frozen </th><th>Available</th> <th>Balance</th><th>PNL</th>
+                          </tr>
+                      </thead>
+                      <tbody>
 
+                      </tbody>
                   </table>
 
               </div>
           </div>
             </div>
-            <div class="card-footer small text-muted"></div>
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
           </div>
 
         </div>
@@ -268,54 +291,106 @@
     <script src="/static/js/demo/datatables-demo.js"></script>
     <script src="/static/js/demo/chart-area-demo.js"></script>
     <script type="text/javascript">
-        // [price_dict,balanceTable_dict,exchangePrice_recordTime,account_recordTime_list]
-        var data = {{ data|safe}}
-        // alert(data)
-        // price_array = {{price_list|safe}}
-        // data_array = JSON.parse(data)
-        data_array = eval(data)
-        price_dict = (data_array[0])
-        exchangePrice_recordTime = data_array[1]
-        balanceTable_dict = data_array[2]
-        account_recordTime_list = data_array[3]
-        //----------  generate exchange price table ------------- //
-        var columns = price_dict['columns']
-        $table = $('table#price')
-        $tr = $('<tr></tr>').appendTo($('<thead></thead>').appendTo($table))
-        for(var i=0,len=columns.length;i<len;i++){
-            $('<th></th>').text(columns[i]).appendTo($tr)
-        }
-        table_data = price_dict['data']
-        $tr = $('<tr></tr>').appendTo($('<tbody></tbody>').appendTo($table))
-        for(var i=0,len=table_data.length;i<len;i++){
-            for(var j=0,len1=table_data[i].length;j<len1;j++)
-            $('<td></td>').text(table_data[i][j]).appendTo($tr)
-        }
-        $('div#realtime_price').text('实时价格  '+exchangePrice_recordTime)
 
-        //----------  generate balance tables for each account ------------- //
-        // tableId_list = Object.keys(balanceTable_dict)
-        // table_num = tableId_list.length
-        for(var tableId in balanceTable_dict){ // generate table for each account
-            // tableId = tableId.replace('/')
-            $table = $('table#'+tableId.replace('/','_'))
-            data = balanceTable_dict[tableId]
-            columns = data['columns']
-            // alert(columns[2])
-            var table_data = data['data']
-            $thead = $('<thead></thead>')
-            $tr = $('<tr></tr>').appendTo($thead).appendTo($table)
-            for(var i=0,len=columns.length;i<len;i++){
-                $('<th></th>').text(columns[i]).appendTo($tr)
-            }
-            // alert(table_data.length)
-            $tbody = $('<tbody></tbody>')
-            for(var i=0,len=table_data.length;i<len;i++){
-                $tr = $('<tr></tr>').appendTo($tbody).appendTo($table)
-                for(var j=0,len1=table_data[i].length;j<len1;j++)
-                $('<td></td>').text(table_data[i][j]).appendTo($tr)
-            }
+        var data = {{ data|safe}}
+        // price_array = {{price_list|safe}}
+        data_array = data
+        now_balance_array = data_array[0]
+        yest_balance_array = data_array[1]
+        price_array = data_array[2]
+        datetime = data_array[3]
+        $('div#realtime_price').text('实时价格  '+datetime)
+        // alert(price_array.length)
+        tableId_list = new Array('table#balance1','table#balance2','table#balance3')
+        float_fixed = 6
+        var keys=new Array("currency","frozen","available","balance")
+        $table_order = $('table#price')
+        // alert(price_array[0])
+        $tr = $('<tr></tr>').appendTo($table_order)
+        for(var i=0,len=price_array.length;i<len;i++){
+            $('<td></td>').text(price_array[i]).appendTo($tr)
         }
+
+        for (var i=0,len=now_balance_array.length; i<len; i++){
+            currency_now = now_balance_array[i]
+            currency_yest = yest_balance_array[i]
+            // alert(data_arr.length)
+            for (var j=0,len1=currency_now.length;j<len1;j++ ){
+            // var item = data_arr[j]
+              var now_items = currency_now[j]
+              var yest_item = currency_yest[j]
+              $tr = $('<tr></tr>').appendTo($(tableId_list[i]))
+              var k=0,len2=Object.keys(now_items).length
+              for(;k<len2;k++){
+                  var $val = now_items[keys[k]]
+                  if(k>0) {$val = parseFloat($val).toFixed(float_fixed)}
+                  $td = $('<td></td>').text($val)
+                  $tr.append($td)
+              }
+              pnl = now_items['balance']/yest_item['balance']-1
+              $td = $('<td></td>').text(pnl)
+              $tr.append($td)
+            }
+            $tr = $('<tr></tr>').appendTo($(tableId_list[i]))
+            $('<td></td>').text('Total').appendTo($tr)
+
+            // alert(currency_now[0])
+            for(var k=1;k<4;k++){
+                  $btc = currency_now[0][keys[k]]
+                  $non_btc = currency_now[1][keys[k]]
+                  $all_in_btc = parseFloat($btc)+parseFloat(price_array[i])*parseFloat($non_btc)
+                  $('<td></td>').text($all_in_btc.toFixed(float_fixed)).appendTo($tr)
+            }
+            $('<td></td>').text(' ').appendTo($tr)
+        }
+      function update_balance(){
+        $.get("/balance/", function(data){
+
+            var data = '{{ data|safe}}'
+            // alert(data)
+            data_array = eval(data)
+            now_balance_array = data_array[0]
+            yest_balance_array = data_array[1]
+            price_array = data_array[2]
+            // alert(data_array.length)
+            tableId_list = new Array('table#balance1','table#balance2','table#balance3')
+            float_fixed = 6
+            var keys=new Array("currency","frozen","available","balance")
+
+            $tr = $('table#price').children('tr').eq(0)
+
+            for(var i=0,len=price_array.length;i<len;i++){
+                $tr.children('td').eq(i).text(price_array[i])
+            }
+
+            for (var i=0,len=now_balance_array.length; i<len; i++){
+                currency_now = now_balance_array[i]
+                currency_yest = yest_balance_array[i]
+                $table = $(tableId_list[i])
+                // alert(data_arr.length)
+                for (var j=0,len1=currency_now.length;j<len1;j++ ){
+                    var now_items = currency_now[j]
+                    var yest_item = currency_yest[j]
+                    var k=0,len2=Object.keys(now_items).length
+                    for(;k<len2;k++){
+                        var $val = now_items[keys[k]]
+                        if(k>0) {$val = parseFloat($val).toFixed(float_fixed)}
+                        $td = $table.find('tr').eq(j).children('td').eq(k)
+                        $td.text($val)
+                    }
+                    pnl = now_items['balance']/yest_item['balance']-1
+                    $td_pnl = $table.find('tr').eq(j).children('td').eq(k)
+                    $td_pnl.text(pnl)
+              }
+            }
+        })
+          // alert('hello')
+      }
+        $(document).ready(function () {
+        // setInterval("update_balance()", 30000);//0.5s一次
+    });
+
+
 
     </script>
 
