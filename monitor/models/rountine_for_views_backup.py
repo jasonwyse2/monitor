@@ -6,9 +6,10 @@ from pymongo import MongoClient
 from monitor.models.bitasset.BitAssetInterface import *
 from monitor.models.bitasset.bitasset_util import BitAsset
 from datetime import timedelta
-from monitor.models.tool import *
+from monitor.models.dbOperation.tool import *
 from  django.http import HttpResponse
 from configparser import ConfigParser
+from monitor.models.dbOperation.MongoOps import Mongo
 bitasset = BitAsset()
 # Create your views here.
 conn = MongoClient("mongodb://localhost:27017/")
@@ -25,6 +26,16 @@ mongo_table_balance_dict = {'ETH/BTC':'tradeBalance_ethbtc', 'BCH/BTC':'tradeBal
                             'LTC/BTC':'tradeBalance_ltcbtc'}
 mongo_table_price = 'bitasset_RealTrade_price'
 
+
+mongodb_name = 'bitasset'
+mongodb_orderTable_name = 'order'
+mongodb_balanceTable_name = 'balance'
+mongodb_userTable_name = 'user'
+mongodb_exchangeTable_name = 'exchange'
+sql3_datafile= '/mnt/data/bitasset/bitasset0906.sqlite'
+dbOps_obj = Mongo(sql3_datafile)
+
+# mongo_userTable = dbOps_obj.get_mongodb_table(mongodb_name, mongodb_userTable_name)
 def get_update_data():
 
     tl = time.time()
