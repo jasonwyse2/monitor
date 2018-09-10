@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <!--<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes"/>-->
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no" />
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -100,11 +100,6 @@
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>BitAsset Test</span>
-          </a>
 
         </li>
         <li class="nav-item">
@@ -120,7 +115,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/order/" target="_Blank">
             <i class="fas fa-fw fa-table"></i>
-            <span>Order</span></a>
+            <span>Test Account Order</span></a>
         </li>
       </ul>
 
@@ -282,10 +277,8 @@
       $div_row_array = $('div.row,.clearfix')
       var count = 1
       // alert($div_row_array.length)
-      tableId_list=Object.keys(balanceTable_dict).sort()
-      // alert(tableId_list.length)
-      for(var k = 0,len_k=tableId_list.length; k < len_k; k++) {
-        tableId = tableId_list[k]
+      for(var tableId in balanceTable_dict){ // generate table for each account
+        // tableId = tableId.replace('/')
           $div_column = $div_row_array.eq(count).find('div.col-sm-5, column').first()
           $div_head = $div_column.find('div').first()
           $div_head.text(tableId+' 账户余额 ' + account_datetime_list[count-1])
@@ -308,36 +301,9 @@
               for(var j=0,len1=table_data[i].length;j<len1;j++)
               $('<td></td>').text(table_data[i][j]).appendTo($tr)
           }
+
           count+=1
       }
-
-      // for(var tableId in balanceTable_dict){ // generate table for each account
-      //   // tableId = tableId.replace('/')
-      //     $div_column = $div_row_array.eq(count).find('div.col-sm-5, column').first()
-      //     $div_head = $div_column.find('div').first()
-      //     $div_head.text(tableId+' 账户余额 ' + account_datetime_list[count-1])
-      //     // $table = $('<table></table>').appendTo($div_column)
-      //     // $table = $('table#'+tableId.replace('/','_'))
-      //     $table = $div_column.find('table').first()
-      //     data = balanceTable_dict[tableId]
-      //     columns = data['columns']
-      //     // alert(columns[2])
-      //     var table_data = data['data']
-      //     $thead = $('<thead></thead>')
-      //     $tr = $('<tr></tr>').appendTo($thead).appendTo($table)
-      //     for(var i=0,len=columns.length;i<len;i++){
-      //         $('<th></th>').text(columns[i]).appendTo($tr)
-      //     }
-      //     // alert(table_data.length)
-      //     $tbody = $('<tbody></tbody>')
-      //     for(var i=0,len=table_data.length;i<len;i++){
-      //         $tr = $('<tr></tr>').appendTo($tbody).appendTo($table)
-      //         for(var j=0,len1=table_data[i].length;j<len1;j++)
-      //         $('<td></td>').text(table_data[i][j]).appendTo($tr)
-      //     }
-      //
-      //     count+=1
-      // }
 
     </script>
 

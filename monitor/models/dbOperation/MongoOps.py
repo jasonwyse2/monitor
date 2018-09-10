@@ -70,7 +70,19 @@ class Mongo:
                 format_time = get_local_datetime(format_str="%Y-%m-%d %H:%M:%S")
                 format_time_hour = format_time[0:13] #precise to hour
                 query = {'userId': userId,'datetime':{'$regex':format_time_hour}}
-                values = {'userId':userId,'datetime': format_time, 'account': balance_info['data']}
+                values = {'userId': userId, 'datetime': format_time, 'account': balance_info['data']}
+
+                doc_lastRecord = self.find(userId,record_num=1)
+                last_account = list(doc_lastRecord)[0]['account']
+                df_lastBTCBalance = pd.DataFrame(last_account)
+                lastBTCValue = df_lastBTCBalance.loc[df_lastBTCBalance['currency']=='BTC','balance'].values[0]
+
+                new_account = balance_info['data']
+                df_newBTCBalance = pd.DataFrame(new_account)
+                newBTCValue = df_newBTCBalance.loc[df_newBTCBalance['currency']=='BTC','balance'].values[0]
+
+                if(lastBTCValue!=newBTCValue):
+                    values = {'userId':userId,'datetime': format_time, 'account': balance_info['data'],'change':1}
                 # doc = self.mongodb_balanceTable.find_one(query)
                 self.mongodb_balanceTable.update(query, values, True, False)
                 print('insert balance successfully into mongodb for user:%s ' % UserId_UserName_dict[userId])
@@ -83,8 +95,8 @@ class Mongo:
             # print(list(docs))
             return docs
         def find_by_datetime(self,userId,datetime):
-            query  = {'userId': userId,'datetime':{'$lte':datetime}}
-            docs = self.mongodb_balanceTable.find(query).sort('_id',-1).limit(1)
+            query  = {'userId': userId,'datetime':{'$lt':datetime}}
+            docs = self.mongodb_balanceTable.find(query).sort('datetime',-1).limit(1)
             return docs
         def delete(self, userId):
             pass
