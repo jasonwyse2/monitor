@@ -41,7 +41,7 @@ mongodb_balanceTable = dbOps_obj.get_mongodb_table(mongodb_name, mongodb_balance
 
 exchange_obj = Mongo.Exchange(listen_exchangeName, mongodb_exchangeTable)
 user_obj = Mongo.User(mongodb_userTable)
-from monitor.models.dbOperation.userInfo_conf import UserId_UserName_dict
+from monitor.models.dbOperation.UserInfo_Conf import UserId_UserName_dict,UserName_UserId_dict
 userId_list = [123,124,125]
 def get_update_data():
     docs_new = exchange_obj.find(record_num=1, exchangeName=listen_exchangeName)
@@ -139,5 +139,7 @@ def adjust_values_in_df(df):
     return df
 
 if __name__ == "__main__":
-
-    get_update_data()
+    exchange_obj = Mongo.Exchange(listen_exchangeName, mongodb_exchangeTable)
+    docs_new = exchange_obj.find(record_num=1, exchangeName=listen_exchangeName)
+    price_dict = list(docs_new)[0]['exchangePrice']
+    pass

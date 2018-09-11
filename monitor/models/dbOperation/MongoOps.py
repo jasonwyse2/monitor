@@ -11,7 +11,7 @@ import pandas as pd
 # from MarketMakerBasic import WebSocketBasic
 from concurrent.futures import ThreadPoolExecutor, wait, as_completed
 import gzip
-from monitor.models.dbOperation.userInfo_conf import UserInfo_dict, UserName_UserId_dict, UserId_UserName_dict
+from monitor.models.dbOperation.UserInfo_Conf import UserName_UserId_dict, UserId_UserName_dict
 import numpy as np
 from apscheduler.schedulers.blocking import BlockingScheduler
 # data = 'This a md5 test!'
@@ -115,10 +115,10 @@ class Mongo:
             format_time_hour = format_time[0:13]  # precise to hour
             query = {'datetime': {'$regex':format_time_hour}}
             values = {'datetime': format_time,'exchangeName':self.exchangeName}
-
-            values.update(price_dict)
+            exchangeRate_dict = {'exchangePrice':price_dict}
+            values.update(exchangeRate_dict)
             print(' "price_dict" going to write in mongodb:',values)
-            self.mongodb_exchangeTable.update(query, values, True, False)
+            self.mongodb_exchangeTable.insert(query, values, True, False)
         def find(self,record_num,exchangeName='huobi'):
             query = {'exchangeName':exchangeName}
             # self.mongodb_exchangeTable.update(query, values, True, False)

@@ -19,10 +19,10 @@ from monitor import views
 urlpatterns = [
     path(r'admin', admin.site.urls),
     path(r'index/', views.index),
-    path(r'balance/',views.balance),
     path('order_search/', views.order_search),
     path('order/', views.order),
-    path('',views.default_index)
+    path('',views.default_index),
+    path('test/',views.test)
     # path('coin/',include('monitor_coin.urls')),
     # path(r'^$',include('monitor_coin.urls'))
 ]

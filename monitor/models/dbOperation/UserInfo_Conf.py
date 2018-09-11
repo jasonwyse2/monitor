@@ -1,5 +1,5 @@
 
-UserInfo_dict = [
+UserInfo_dict_list = [
     {'userId': 666772, 'userName': 'test001@bitasset.com', 'APIKEY': 'ak178f82404a714188', 'SECRETKEY': '1ce9a832919d403a839ff4293cea10d8','RESTURL':'http://tapi.bitasset.cc:7005/'},
     {'userId': 666773, 'userName': 'test002@bitasset.com', 'APIKEY': 'ak178f82404a714189', 'SECRETKEY': '1ce9a832919d403a839ff4293cea10d9','RESTURL':'http://tapi.bitasset.cc:7005/'},
     {'userId': 666842, 'userName': 'test003@bitasset.com', 'APIKEY': 'ak178f82404a714155', 'SECRETKEY': '1ce9a832919d403a839ff4293cea10c8','RESTURL':'http://tapi.bitasset.cc:7005/'},
@@ -24,4 +24,13 @@ UserId_UserName_dict = {
     666772:'test001',666773:'test002',666842:'test003',666849:'test004',
     666850:'test005',666902:'test006',666903:'test007',
     123:'maker_lj1',124:'maker_lj2',125:'maker_lj3'
+}
+
+StatusName_StatusCode_dict ={
+# 2:full ,3:cancel
+    'full':2,'cancel':3,'no':0,'part':1,'part-cancel':4
+}
+StatusCode_StatusName_dict ={
+# 2:full ,3:cancel
+    2:'full',3:'cancel',0:'no',1:'part',4:'part-cancel'
 }
