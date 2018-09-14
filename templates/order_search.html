@@ -203,10 +203,10 @@
       var data_array = eval('('+data+')');
         // alert(data_array.length)
 
-        $table_order = $('table#dataTable')
+        $table = $('table#dataTable')
         for(var i=0,len=data_array.length;i<len;i++){
             var data_tr_array = data_array[i]
-            $tr = $('<tr></tr>').appendTo($table_order)
+            $tr = $('<tr></tr>').appendTo($table)
             for(var j=0,len1=data_tr_array.length;j<len1;j++){
                 $('<td></td>').text(data_tr_array[j]).appendTo($tr)
             }

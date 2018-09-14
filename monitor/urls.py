@@ -18,13 +18,12 @@ from django.urls import path,include
 from monitor import views
 urlpatterns = [
     path(r'admin', admin.site.urls),
-    path(r'index/', views.index),
+    path(r'index/', views.default_index),
     path('order_search/', views.order_search),
     path('order/', views.order),
     path('',views.default_index),
-    path('test/',views.test)
-    # path('coin/',include('monitor_coin.urls')),
-    # path(r'^$',include('monitor_coin.urls'))
+    path('test/', views.testAccount),
+    path('testOrder/', views.testOrder)
 ]
 # from django.conf import settings
 # if settings.DEBUG is False:

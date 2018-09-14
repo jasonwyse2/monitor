@@ -11,16 +11,14 @@ import pandas as pd
 # from MarketMakerBasic import WebSocketBasic
 from concurrent.futures import ThreadPoolExecutor, wait, as_completed
 import gzip
-from monitor.models.dbOperation.UserInfo_Conf import UserName_UserId_dict, UserId_UserName_dict
+from monitor.models.dbOperation.UserInfo_Conf import UserName_UserId_dict, UserId_UserName_dict, StatusName_StatusCode_dict
 import numpy as np
 from apscheduler.schedulers.blocking import BlockingScheduler
-# data = 'This a md5 test!'
-# hash_md5 = hashlib.md5(data)
-# hash_md5.hexdigest()
+
 class Mongo:
-    def __init__(self, sql3_datafile):
+    def __init__(self):
         self.conn = MongoClient("mongodb://localhost:27017/")
-        self.sql3 = Sqlite3(dataFile=sql3_datafile)
+        # self.sql3 = Sqlite3(dataFile=sql3_datafile)
 
     def get_mongodb(self,mongodb_name):
         return self.conn[mongodb_name]
@@ -31,9 +29,9 @@ class Mongo:
         def __init__(self,mongodb_userTable):
             self.mongodb_userTable = mongodb_userTable
 
-        def update(self, userId, APIKEY, APISECRET):
+        def update(self, userId, APIKEY, SECRETKEY, RESTURL):
             query = {'userId': userId}
-            values = {'$set': {'APIKEY': APIKEY, 'SECRETKEY': APISECRET}}
+            values = {'$set': {'APIKEY': APIKEY, 'SECRETKEY': SECRETKEY, 'RESTURL':RESTURL}}
             self.mongodb_userTable.update(query, values)
             print('update user info (userName:%s) successfully' % (userId))
 
@@ -105,6 +103,63 @@ class Mongo:
         def __init__(self,mongodb_orderTable, dealApi):
             self.mongodb_orderTable = mongodb_orderTable
             self.dealApi = dealApi
+        def insert(self, orderId_list):
+            if(len(orderId_list))==0:
+                return
+            else:
+                while True:
+                    orders_info_str = self.dealApi.get_orders_info(orderId_list)
+                    orders_info = json.loads(orders_info_str)
+                    code = orders_info['code']
+                    if code == 0:
+                        data = orders_info['data']
+                        orderInfo_df = pd.DataFrame(data)
+                        # select the done order out, 2:full ,3:cancel
+                        full_code = StatusName_StatusCode_dict['full']
+                        cancel_code = StatusName_StatusCode_dict['cancel']
+                        order_full_df = orderInfo_df[orderInfo_df['status'] == full_code]
+
+                        order_cancel_df =  orderInfo_df[(orderInfo_df['status'] == cancel_code)]
+                        order_partCancel_df = order_cancel_df.loc[(orderInfo_df['filledQuantity'].values>0) & (orderInfo_df['canceledQuantity'].values>0)]
+                        order_partCancel_df['status'] = StatusName_StatusCode_dict['part-cancel']
+
+
+                        order_cancel_df = order_cancel_df.copy()
+                        order_cancel_df.loc[(orderInfo_df['filledQuantity'] > 0) & (orderInfo_df['canceledQuantity'] > 0),'status']\
+                            =StatusName_StatusCode_dict['part-cancel']
+
+
+                        order_done_df = pd.concat([order_full_df,order_cancel_df])
+                        order_done_df.reset_index(inplace=True)
+                        done_order_list = order_done_df.to_dict(orient='records')
+
+                        if len(done_order_list) > 0:
+                            self.mongodb_orderTable.insert(done_order_list)
+                        break
+
+            insert_orderId_list = order_done_df['uuid'].values.tolist()
+            return insert_orderId_list
+
+        def saveOrder(self,mongo_obj,sql3_obj,userId_list):
+
+            mongodb_userTable = mongo_obj.get_mongodb_table(mongodb_name='bitasset', mongoTable_name='user')
+            mongodb_orderTable = mongo_obj.get_mongodb_table(mongodb_name='bitasset', mongoTable_name='order')
+            num_read_from_sql3 = 300
+            for i in range(len(userId_list)):
+                userId = userId_list[i]
+                orderId_list0 = sql3_obj.fetch_specific_num(userId, num=num_read_from_sql3)
+                if orderId_list0:
+                    orderId_list = pd.DataFrame(orderId_list0).iloc[:, 0].values.tolist()
+                    user_obj = Mongo.User(mongodb_userTable)
+                    dealApi = user_obj.get_dealApi(userId)
+                    order_obj = Mongo.Order(mongodb_orderTable, dealApi)
+                    insert_orderId_list = order_obj.insert(orderId_list)
+                    print('insert into mongodb items', len(insert_orderId_list))
+                    sql3_obj.delete_by_userId_orderIdlist(userId, insert_orderId_list)
+            print('------------- save order is over. --------------')
+
+        def find(self,num):
+            pass
     class Exchange():
         def __init__(self,exchangeName,mongodb_exchangeTable):
             self.mongodb_exchangeTable = mongodb_exchangeTable
@@ -123,46 +178,9 @@ class Mongo:
             query = {'exchangeName':exchangeName}
             # self.mongodb_exchangeTable.update(query, values, True, False)
             docs = self.mongodb_exchangeTable.find(query).sort('_id', -1).limit(record_num)
+            # for doc in docs:
+            #     print(doc)
             return docs
-    def collect_data_from_sql3_into_mongodb(self, symbol, num_to_delete_sql3):
-        mongo_db = self.mongodb
-        mongo_table = self.mongo_table
-        dealapi = self.get_dealapi_by_symbol(symbol)
-
-        sql3 = self.sql3
-        orders = sql3.fetch_specific_num(num=num_to_delete_sql3)
-        df = pd.DataFrame(list(orders))
-
-        if df.shape[0]==0:
-            return
-        # print(df)
-        orders_list = df.ix[:,0].tolist()
-        # print(len(orders_list))
-        # max_msg = max(orders_list)
-        while True:
-            orders_info_str = dealapi.get_orders_info(orders_list)
-            orders_info = json.loads(orders_info_str)
-            code = orders_info['code']
-            if code==0:
-                data = orders_info['data']
-                orderInfo_df = pd.DataFrame(data)
-                # select the done order out, 2:full ,3:cancel
-                tmp2 = orderInfo_df['status'] == 2
-                tmp3 = orderInfo_df['status'] == 3
-                tmp = (orderInfo_df['status'] == 2 or orderInfo_df['status'] == 3)
-                order_done_df = orderInfo_df[tmp]
-                done_data = order_done_df.values
-                if len(done_data)>0:
-                    # print(data)
-                    mongo_db[mongo_table].insert(done_data)
-                orderid_series = done_data['uuid']
-                # sql3.delete_orders_before_timestamp(max_msg)
-                sql3.delete_orders_by_id(list(orderid_series))
-                orders = sql3.fetchall()
-                df_all = pd.DataFrame((orders))
-                print(df_all)
-                break
-        print('collect data from sql3 into mongodb successfully!')
 
 
 if __name__ == "__main__":
@@ -173,7 +191,7 @@ if __name__ == "__main__":
     mongodb_userTable_name = 'user'
     mongodb_exchangeTable_name = 'exchange'
     sql3_datafile= '/mnt/data/bitasset/bitasset0906.sqlite'
-    dbOps_obj = Mongo(sql3_datafile)
+    dbOps_obj = Mongo()
 
     # ----  store data in mongo
 
